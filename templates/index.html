@@ -4,7 +4,7 @@
 <title>RPi Web Server</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script type="JavaScript">
+<script>
     function loadDoc() {
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -18,7 +18,7 @@
 </script>
 </head>
 
-<body>
+<body onload="loadDoc()">
     <div id="demo">
         ajax-test: initial
     </div>
