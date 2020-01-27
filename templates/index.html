@@ -1,78 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>RPi Web Server</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script>
-    function get_fridge_state() {
-        console.log("starte: get_fridge_state()");
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>RPi Web Server</title> 
+<link rel="stylesheet" 
+type="text/css" href="{{ url_for('static', filename='style.css') }}"> <meta 
+name="viewport" content="width=device-width, initial-scale=1"> <script>
+    function loadDoc() {
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-         document.getElementById("div_fridge_state").innerHTML = this.responseText;
+         document.getElementById("demo").innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("GET", "ajax_info.txt", true);
+      xhttp.send();
+    }
+
+
+    function get_fridge_state() {
+        console.log("calling: get_fridge_state()");
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+         document.getElementById("fridge_state").innerHTML = this.responseText;
         }
       };
       xhttp.open("GET", "/update-state_fridge", true);
       xhttp.send();
-      setTimeout(get_fridge_state,1000);
-    }
-</script>
-</head>
-
+      setTimeout(get_fridge_state,200);
+    } 
+</script> 
+</head> 
 <body onload="get_fridge_state()">
-    <div id="div_fridge_state">
-        ajax-test: initial
+    <div id="fridge_state">
+        Hello World
     </div>
-<button type="button" onclick="get_fridge_state()">Update Content</button>
-  
-    <h2>Smarte fridge</h2>
-    <!-- <p>{{door_state_text}}</p> -->
-    <p>{{door_state}}</p>
-    <p>{{magnet_state}}</p>
-   <a href="/on"><button>ON</button></a> 
+    <!--<button type="button" onclick="loadDoc()">Update Content</button>-->
+    
+    <h2>Smart fridge</h2>
+    <p>Door: {{door_state}}</p>
+    <p>Magnet: {{magnet_state}}</p>
+    <a href="/on"><button>ON</button></a>
     <a href="/off"><button class="off">OFF</button></a>
-
+   
    
 </script> 
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-<title>RPi Web Server</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script>
-    function get_fridge_state() {
-        console.log("starte: get_fridge_state()");
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-         document.getElementById("div_fridge_state").innerHTML = this.responseText;
-        }
-      };
-      xhttp.open("GET", "/update-state_fridge", true);
-      xhttp.send();
-      setTimeout(get_fridge_state,1000);
-    }
-</script>
-</head>
-
-<body onload="get_fridge_state()">
-    <div id="div_fridge_state">
-        ajax-test: initial
-    </div>
-<button type="button" onclick="get_fridge_state()">Update Content</button>
-  
-    <h2>Smarte fridge</h2>
-    <!-- <p>{{door_state_text}}</p> -->
-    <p>{{door_state}}</p>
-    <p>{{magnet_state}}</p>
-   <a href="/on"><button>ON</button></a> 
-    <a href="/off"><button class="off">OFF</button></a>
-
-   
-</script> 
-</body>
+</body> 
 </html>

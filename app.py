@@ -138,7 +138,12 @@ def control_update_fridge_state():
         set_state3()
 
     # return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
-    return ("status is set: " + str(session.get('status_session')))
+    if str(session.get('status_session')) == "state3":
+        #return("This is a bill")
+        return render_template('bill.html', quantity=42)
+    else:
+        return ("status is set: " + str(session.get('status_session')))
+
 
 
 #start the web server at localhost on port 80 port=1338
