@@ -1,0 +1,72 @@
+#state12 {
+    
+    color: #000000;
+
+}
+
+#state3 {
+    color: #79FFB1;
+}
+
+.center {
+    margin: 0 auto;
+    width:80%;
+}
+
+.active {
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 89.29%;
+    /* laufender Vorgang */
+    background: #79FFB1;
+}
+
+.activeText {
+    position: absolute;
+    margin-top: 5%;
+    left: 32.3%;
+    right: 34.3%;
+    top: 4.35%;
+    bottom: 92.52%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+    display: flex;
+    text-align: center;
+    /* Gray 2 */
+    color: #4F4F4F;
+}
+
+.product {
+    position: static;
+    width: 220px;
+    height: 76px;
+    left: 0px;
+    top: 0px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    /* Text */
+    color: #828282;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    align-self: center;
+    margin: 0px 0px;
+}
+
+.frame {
+    position: absolute;
+    width: 220px;
+    height: 380px;
+    left: 120px;
+    top: 200px;
+}
