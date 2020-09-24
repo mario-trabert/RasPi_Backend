@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <script>
+            function get_qrcode_html(){
+                var xhttp = new XMLHttpRequest();
+                var response_text = "";
+                var returnPromise = new Promise(function(){return response_text;}, function(err) { console.log(err)});
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        response_text = this.response;
+                        console.log(response_text);
+                        
+                        var json_obj = JSON.parse(response_text);
+                        var json_count = Object.keys(json_obj).length;
+
+                        document.getElementById("demo").innerHTML = json_obj[1];
+                        document.getElementById("demo_length").innerHTML = json_count;
+
+                        var table_header = "<table><tr><th>No.</th><th>Item Name</th></tr>";
+                        var table_content = "";
+
+                        var table_counter = 1;
+
+                        // loop through json_obj
+                        for (i = 0; i < json_count; i++) {
+                            table_content = table_content + "<tr><td>" + table_counter + "</td><td>" + json_obj[i] + "</td></tr>";
+                            table_counter++;
+                        }
+
+                        var table_footer = "</table>"
+                        document.getElementById("bill_table").innerHTML = table_header + table_content + table_footer;
+                    }
+                };
+                xhttp.open("GET", "http://192.168.8.104:1337/get_qrcodes", true);
+                xhttp.send();
+  
+            }
+
+        </script>
+
+    </head>
+    <body onload="get_qrcode_html()">
+        Hallo Welt
+        <div id="demo">
+            Div test
+        </div>
+        <div id="demo_length">
+            div test length
+        </div>
+        <div id="bill">
+            <table id="bill_table">
+
+            </table>
+        </div>
+    </body>
+</html>

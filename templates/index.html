@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fridge web Server</title>
+    <!-- <link rel="stylesheet" href="assets/stylesheet.css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        var bill_rendered = false;
+        var dict_items_before = {};
+        var dict_items_after = {};
+
+        // returns a list of differences of two dicts
+        function return_list_difference (dict1, dict2) {
+            
+            // return true if value is in dict
+            var isInDict = function(value, dict) {
+                for (var key in dict) {
+                    if (dict[key] == value) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            dict1_valueLen = Object.keys(dict1).length;
+            dict2_valueLen = Object.keys(dict2).length;
+            array_diff = [];
+            for (var i = 0; i < dict2_valueLen; i++) {
+                var item_dict2_current = dict2[i];
+                for (var j = 0; j < dict1_valueLen; j++) {
+                    var item_dict1_current = dict1[j];
+                    if (!isInDict(item_dict1_current, dict2)) {
+                        array_diff.push(item_dict1_current);
+                    }
+                }
+            }
+
+            // remove duplicates
+            let unique = [...new Set(array_diff)];
+            return(unique);
+        }
+
+        // function is been called regularly to call the backend
+        function get_fridge_state() {
+
+            function isEmpty(obj) {
+                return Object.keys(obj).length === 0;
+            }
+
+            // console.log("calling: get_fridge_state()");
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //document.getElementById("fridge_state").innerHTML = this.response;
+                    var state_current = this.response;
+                    if (state_current == "state1") {
+                        document.getElementById("fridge_state").innerHTML = "<div class='status active'><h2 class='activeText textPos center'>FRIDGE READY</h2></div>";
+                        //console.log("hallo aus  state1")
+                        // set initial list of items if empty
+                        if(isEmpty(dict_items_before)) {
+                            var xhttp2 = new XMLHttpRequest();
+                            var response_text = "";
+                            xhttp2.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    dict_items_before = JSON.parse(this.response);
+                                    console.log("dict_items_before gesetzt: " + dict_items_before);
+                                }
+                            };
+                            xhttp2.open("GET", "http://192.168.8.104:1337/get_qrcodes", true);
+                            xhttp2.send();
+
+
+                        }
+                    }
+                    if (state_current == "state2") {
+                        document.getElementById("fridge_state").innerHTML = "<div class='status active'><h2 class='activeText textPos center'>FRIDGE OPEN</h2></div>";
+
+                    }
+                    if (state_current == "state3") {
+                        document.getElementById("fridge_state").innerHTML = "<div class='status inactive'><h2 class='activeText textPos2 center'>PROCESS COMPLETE</h2></div><div class='button'><a href='https://xuanthiducle.github.io/QRCodeScanFridge/demo/index_qr_code.html' class='buttonText'>new process</a></div>";
+                        if (bill_rendered == false) {
+                            update_bill_table();
+                            bill_rendered = true;
+                        }
+                    }
+                }
+            };
+            xhttp.open("GET", "/update-state_fridge", true);
+            xhttp.send();
+            setTimeout(get_fridge_state, 200);
+        }
+
+        // function to update the bill-table
+        function update_bill_table() {
+            var xhttp = new XMLHttpRequest();
+            var response_text = "";
+            xhttp.onreadystatechange = function () {
+                console.log("Hallo aus get_qrcode_html");
+                if (this.readyState == 4 && this.status == 200) {
+                    response_text = this.response;
+                    console.log(response_text);
+
+                    // get current objects after state 2
+                    var json_obj = JSON.parse(response_text);
+                    var json_count = Object.keys(json_obj).length;
+                    dict_items_after = json_obj;
+
+                    var list_difference = return_list_difference(dict_items_before, dict_items_after);
+
+                    console.log(list_difference);
+
+                    var table_header = "<table id='bill_table'><tr><th>No.</th><th>Item Name</th></tr>";
+                    var table_content = "";
+                    var table_counter = 1;
+
+                    var medi_dict = {
+                        "medi01": "Emergency Backup",
+                        "medi02": "Simple Solution",
+                        "medi04": "Anti Buzzword",
+                        "medi05": "Debugging"
+                    };
+
+                    // loop through list_difference
+                    //for (var i = 0; i < list_difference.length; i++) {
+                    for (var item_current of list_difference) {
+                        var medi_name_current = medi_dict[item_current];
+                        table_content = table_content + "<tr><td>" + table_counter + "</td><td>" + medi_name_current + "</td></tr>";
+                        table_counter++;
+                    }
+
+
+                    
+                    /*
+                    // loop through json_obj
+                    for (i = 0; i < json_count; i++) {
+
+                        var medi_name_current = medi_dict[json_obj[i]];
+                        table_content = table_content + "<tr><td>" + table_counter + "</td><td>" + medi_name_current + "</td></tr>";
+                        table_counter++;
+                    }
+                    */
+                    var table_footer = "</table>"
+                    document.getElementById("bill_table").innerHTML = table_header + table_content + table_footer;
+                }
+            };
+            xhttp.open("GET", "http://192.168.8.104:1337/get_qrcodes", true);
+            xhttp.send();
+        }
+    </script>
+</head>
+
+<body onload="get_fridge_state()">
+    <div id="fridge_state">
+    </div>
+    <main>
+        <table id="bill_table" class="product frame">
+        </table>
+    </main>
+</body>
+</html>

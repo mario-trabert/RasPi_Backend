@@ -1,0 +1,137 @@
+#state12 {
+    color: #000000;
+}
+
+#state3 {
+    color: #79FFB1;
+}
+
+.center {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.status {
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 89.29%;
+}
+
+.active {
+    /* laufender Vorgang */
+    background: #79FFB1;
+}
+
+.inactive {
+    background: rgb(218, 218, 218);
+}
+
+.activeText {
+    position: absolute;
+    margin-top: 5%;
+    top: 30.35%;
+    bottom: 92.52%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+    display: flex;
+    text-align: center;
+    /* Gray 2 */
+    color: #4F4F4F;
+}
+
+.textPos {
+    left: 32.3%;
+    /* right: 34.3%; */
+}
+
+.textPos2 {
+    left: 27.3%;
+}
+
+.center {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.product {
+    position: static;
+    width: 220px;
+    height: 76px;
+    left: 0px;
+    top: 0px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    /* Text */
+    color: #828282;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 0;
+    align-self: center;
+    margin: 0px 0px;
+}
+
+.frame {
+    position: absolute;
+    width: 400px;
+    height: 50%;
+    left: 80px;
+    top: 74px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 50px;
+    /* display: flex;
+    align-items: center; */
+    /* Text */
+    color: #828282;
+}
+
+.button {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    top: 80%;
+    bottom: 10%;
+    /* Gray 5 */
+    background: rgb(192, 192, 192);
+    border: none;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.37);
+    border-radius: 10px;
+}
+
+.buttonText {
+    margin-top: 10%;
+    margin-left: 27%;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    /* Text */
+    color: #383838;
+   
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border-bottom: 1px solid rgb(218, 218, 218);
+}
+
