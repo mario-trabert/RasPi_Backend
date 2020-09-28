@@ -115,8 +115,8 @@ def set_state1():
 
     magnet.on()
 
-    return render_template('index.html')
-    #return (str(session['status_session']) + " set")
+    #return render_template('index.html')
+    return (str(session['status_session']) + " set")
 
 # fridge wurde geoeffnet
 @app.route('/set_state2')
@@ -126,7 +126,7 @@ def set_state2():
     session["status_door"] = "open"
 
     #return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
-    #return (str(session['status_session']) + " set")
+    return (str(session['status_session']) + " set")
 
 # fridge wurde geschlossen, bill soll angezeigt werden
 @app.route('/set_state3')
@@ -138,6 +138,7 @@ def set_state3():
     magnet.off()
 
     #return render_template('index.html', magnet_state=session["status_magnet"], door_state="Ende Gelaende")
+    return (str(session['status_session']) + " set")
 
 # funktion wird regelmaessig aufgerufen.
 # Abhaengig vom tatsaechlichen status soll der status geupdatet werden
