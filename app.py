@@ -113,7 +113,7 @@ def set_state1():
     session["status_magnet"] = "off"
     session["status_door"] = "closed"
 
-    magnet.off()
+    magnet.on()
 
     return render_template('index.html')
     #return (str(session['status_session']) + " set")
@@ -135,7 +135,7 @@ def set_state3():
     session["status_magnet"] = "on"
     session["status_door"] = "closed"
 
-    magnet.on()
+    magnet.off()
 
     #return render_template('index.html', magnet_state=session["status_magnet"], door_state="Ende Gelaende")
 
