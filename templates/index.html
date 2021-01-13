@@ -10,7 +10,7 @@
     <script>
         var bill_rendered = false;
 
-        // function is been called regularly to call the backedn
+        // function is being called regularly to call the backend
         function get_fridge_state() {
             // console.log("calling: get_fridge_state()");
             var xhttp = new XMLHttpRequest();
@@ -24,7 +24,7 @@
 
                     }
                     if (state_current == "state2") {
-                        document.getElementById("fridge_state").innerHTML = "<div id='state12'>FRIDGE OPEN</div>";
+                        document.getElementById("fridge_state").innerHTML = "<div id='state1_2'>FRIDGE OPEN</div>";
 
                     }
                     if (state_current == "state3") {
@@ -69,7 +69,7 @@
                     document.getElementById("bill_table").innerHTML = table_header + table_content + table_footer;
                 }
             };
-            xhttp.open("GET", "http://192.168.8.104:1337/get_qrcodes", true);
+            xhttp.open("GET", "http://192.168.1.15:1337/get_qrcodes", true);
             xhttp.send();
 
         }
