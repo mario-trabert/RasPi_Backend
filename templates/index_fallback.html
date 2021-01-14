@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fridge web Server</title>
+    <link rel="stylesheet" type="text/css" href="/static/stylesheet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        var bill_rendered = false;
+        var DEBUG = false;
+
+        // function is being called regularly to call the backend
+        function get_fridge_state() {
+            // console.log("calling: get_fridge_state()");
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var state_current = this.response;
+                    if (DEBUG) console.log("state_current = ".concat(state_current));
+                    if (state_current == "state1") {
+                        document.getElementById("fridge_state").innerHTML = "<div class='active'><h2 class='activeText center'>FRIDGE READY</h2></div>";
+                        document.getElementById("title").innerText = state_current;
+                        if (DEBUG) console.log("has arrived in state1");
+                    }
+                    if (state_current == "state2") {
+                        document.getElementById("fridge_state").innerHTML = "<div id='state1_2'>FRIDGE OPEN</div>";
+                        document.getElementById("title").innerText = state_current; if (DEBUG) console.log("has arrived in state2");
+                    }
+                    if (state_current == "state3") {
+                        document.getElementById("fridge_state").innerHTML = "<div id='state3'>Thanks, enjoy your medics</div";
+                        document.getElementById("title").innerText = state_current;
+                        if (bill_rendered == false) {
+                            update_bill_table();
+                            bill_rendered = true;
+                        }
+                    }
+                }
+            };
+            xhttp.open("GET", "/update-state_fridge", true);
+            xhttp.send();
+            setTimeout(get_fridge_state, 200);
+        }
+
+        // function to update the bill-table
+        function update_bill_table() {
+            var xhttp = new XMLHttpRequest();
+            var response_text = "";
+            xhttp.onreadystatechange = function () {
+                console.log("Hallo aus get_qrcode_html");
+                if (this.readyState == 4 && this.status == 200) {
+                    response_text = this.response;
+                    console.log(response_text);
+
+                    var json_obj = JSON.parse(response_text);
+                    var json_count = Object.keys(json_obj).length;
+
+                    var table_header = "<table id='bill_table'><tr><th>No.</th><th>Item Name</th></tr>";
+                    var table_content = "";
+
+                    var table_counter = 1;
+
+                    // loop through json_obj
+                    for (i = 0; i < json_count; i++) {
+                        table_content = table_content + "<tr><td>" + table_counter + "</td><td>" + json_obj[i] + "</td></tr>";
+                        table_counter++;
+                    }
+
+                    var table_footer = "</table>"
+                    document.getElementById("bill_table").innerHTML = table_header + table_content + table_footer;
+                }
+            };
+            xhttp.open("GET", "http://192.168.1.15:1337/get_qrcodes", true);
+            xhttp.send();
+
+        }
+    </script>
+</head>
+
+<body onload="get_fridge_state()">
+    <header>
+        <img src="../static/Acc_Logo_All_Black_RGB.png" alt="Logo" class="logo" height="20px">
+        <h1 id="title"></h1>
+    </header>
+    <div id="fridge_state">
+
+    </div>
+    <main>
+        <table id="bill_table" class="product">
+
+        </table>
+    </main>
+</body>
+
+</html>

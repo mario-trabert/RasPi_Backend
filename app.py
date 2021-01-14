@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, send_from_directory, session, jsonify
+from flask import Flask, render_template, session, jsonify, url_for
 from flask_session import Session
-from gpiozero import Button, LED
+# from gpiozero import Button, LED
 from time import sleep
 
 '''
@@ -45,35 +45,21 @@ State 3:
 app = Flask(__name__)
 sess = Session()
 
-door_sensor = Button(18)
-magnet = LED(23)
-state_led = LED(24)
+# door_sensor = Button(18)
+# magnet = LED(23)
+# state_led = LED(24)
 
 #set the magnet off; remember the magnet works with inverted logic
-magnet.on()
-state_led.on()
-print("Script app.py has started")
+# magnet.on()
+# state_led.on()
 
-def blink(times=1, length=0.25):
-    for i in range(times):
-        print("i = {0}".format(i))
-        state_led.off()
-        sleep(length)
-        state_led.on()
-        sleep(length)
-
-
-@app.route('/test_bill')
-def test_bill_template():
-    return render_template("bill.html", quantity=42)
-
-@app.route('/test')
-def test_template():
-    return render_template("test.html")
-
-@app.route('/test_index')
-def test_index_template():
-    return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
+# def blink(times=1, length=0.25):
+#     for i in range(times):
+#         print("i = {0}".format(i))
+#         # state_led.off()
+#         sleep(length)
+#         state_led.on()
+#         sleep(length)
 
 @app.route('/get_state')
 def get_state():
@@ -96,7 +82,7 @@ def set_state0():
 
     # magnet.on()
 
-    return (str(session['status_session']) + " set")
+    return render_template('index.html', session_state=session["status_session"], magnet_state=session["status_magnet"], door_state=session["status_door"])
 
 # qr-code was detected
 # fridge is unlocked, but closed
@@ -107,10 +93,9 @@ def set_state1():
     session["status_magnet"] = "off"
     session["status_door"] = "closed"
 
-    magnet.off()
+    # magnet.off()
 
-    return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
-    #return (str(session['status_session']) + " set")
+    return render_template('index.html', session_state=session["status_session"], magnet_state=session["status_magnet"], door_state=session["status_door"])
 
 # fridge was opened
 @app.route('/set_state2')
@@ -120,7 +105,7 @@ def set_state2():
     session["status_door"] = "open"
 
     return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
-    #return (str(session['status_session']) + " set")
+
 
 # fridge was closed, bill shall be shown
 @app.route('/set_state3')
@@ -129,11 +114,10 @@ def set_state3():
     session["status_magnet"] = "on"
     session["status_door"] = "closed"
 
-    magnet.on()
+    # magnet.on()
     # bill_show()
 
     #return render_template('index.html', magnet_state=session["status_magnet"], door_state="Ende Gelaende")
-    #return (str(session['status_session']) + " set")
     return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
 
 # function will be called continuously
@@ -144,10 +128,10 @@ def control_update_fridge_state():
     # door_sensor.value == 1 --> closed
     # door_sensor.value == 0 --> open
     # door_sensor.value
-    if door_sensor.value == 1:
-        session["status_door"] = "closed"
-    else:
-        session["status_door"] = "open"
+    # if door_sensor.value == 1:
+    #     session["status_door"] = "closed"
+    # else:
+    #     session["status_door"] = "open"
 
     # if status wasn't set for some reason
     if str(session.get('status_session')) == "None":
@@ -160,12 +144,12 @@ def control_update_fridge_state():
 
     # if state=state1 and status_door = "open", set state2
     elif str(session.get('status_session')) == "state1" and session["status_door"] == "open":
-        blink(times=2)
+        # blink(times=2)
         set_state2()
 
     # if state=state2 und status_door = "closed", set state3
     elif str(session.get('status_session')) == "state2" and session["status_door"] == "closed":
-        blink(times=3)
+        # blink(times=3)
         set_state3()
 
     # return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
@@ -180,4 +164,4 @@ def control_update_fridge_state():
 # start the web server at localhost on port 80 (not port=1338)
 if __name__ == '__main__':
     app.secret_key = "super secret fridge key"
-    app.run(host='0.0.0.0', port=80, debug=False)
+    app.run(debug=True)
