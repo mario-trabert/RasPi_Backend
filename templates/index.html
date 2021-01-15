@@ -2,15 +2,31 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ session_state }}</title>
+        <link rel="stylesheet" type="text/css" href="../static/stylesheet1.css">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
     </head>
+
     <body>
         <header>
-            <img src="../static/Acc_Logo_All_Black_RGB.png" alt="Logo" class="logo">
-            <h1 id="title">{{ session_state }}<br>{{ magnet_state }}<br>{{ door_state }}</h1>
+            <div class="container">
+                <img src="../static/Acc_Logo_All_Black_RGB.png" alt="Logo" class="logo">
+                <h1>Smart Fridge Interface</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/set_state0">Set State 0</a></li>
+                    <li><a href="/set_state1">Set State 1</a></li>
+                    <li><a href="/set_state2">Set State 2</a></li>
+                    <li><a href="/set_state3">Set State 3</a></li>
+                </ul>
+            </nav>
         </header>
-        <div id="fridge_state">
-            
-        </div>
+        <main id="fridge_state">
+
+            {{ session_state }}<br>{{ magnet_state }}<br>{{ door_state }}
+        </main>
+        <footer>
+            2021 Accenture Liquid Studios
+        </footer>
     </body>
 </html>
