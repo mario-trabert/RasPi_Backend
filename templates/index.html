@@ -4,6 +4,43 @@
         <title>{{ session_state }}</title>
         <link rel="stylesheet" type="text/css" href="../static/stylesheet1.css">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
+
+        <script>
+            var bill_rendered = false;
+            var DEBUG = false;
+    
+            // function is being called regularly to call the backend
+            function get_fridge_state() {
+                // console.log("calling: get_fridge_state()");
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var state_current = this.response;
+                        if (DEBUG) console.log("state_current = ".concat(state_current));
+                        if (state_current == "state1") {
+                            document.getElementById("fridge_state").innerHTML = "<div class='active'><h2 class='activeText center'>FRIDGE READY</h2></div>";
+                            document.getElementById("title").innerText = state_current;
+                            if (DEBUG) console.log("has arrived in state1");
+                        }
+                        if (state_current == "state2") {
+                            document.getElementById("fridge_state").innerHTML = "<div id='state1_2'>FRIDGE OPEN</div>";
+                            document.getElementById("title").innerText = state_current; if (DEBUG) console.log("has arrived in state2");
+                        }
+                        if (state_current == "state3") {
+                            document.getElementById("fridge_state").innerHTML = "<div id='state3'>Thanks, enjoy your medics</div";
+                            document.getElementById("title").innerText = state_current;
+                            if (bill_rendered == false) {
+                                update_bill_table();
+                                bill_rendered = true;
+                            }
+                        }
+                    }
+                };
+                xhttp.open("GET", "/update-state_fridge", true);
+                xhttp.send();
+                setTimeout(get_fridge_state, 200);
+            }
+        </script>
     </head>
 
     <body>
