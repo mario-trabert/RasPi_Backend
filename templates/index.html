@@ -2,66 +2,56 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ session_state }}</title>
-        <link rel="stylesheet" type="text/css" href="../static/stylesheet1.css">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
+        
 
+        {% block import %}
+        {% endblock import %}
+        <link rel="stylesheet" type="text/css" href="../static/stylesheet.css">
         <script>
             var bill_rendered = false;
             var DEBUG = false;
     
             // function is being called regularly to call the backend
             function get_fridge_state() {
-                // console.log("calling: get_fridge_state()");
                 var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        var state_current = this.response;
-                        if (DEBUG) console.log("state_current = ".concat(state_current));
-                        if (state_current == "state1") {
-                            document.getElementById("fridge_state").innerHTML = "<div class='active'><h2 class='activeText center'>FRIDGE READY</h2></div>";
-                            document.getElementById("title").innerText = state_current;
-                            if (DEBUG) console.log("has arrived in state1");
-                        }
-                        if (state_current == "state2") {
-                            document.getElementById("fridge_state").innerHTML = "<div id='state1_2'>FRIDGE OPEN</div>";
-                            document.getElementById("title").innerText = state_current; if (DEBUG) console.log("has arrived in state2");
-                        }
-                        if (state_current == "state3") {
-                            document.getElementById("fridge_state").innerHTML = "<div id='state3'>Thanks, enjoy your medics</div";
-                            document.getElementById("title").innerText = state_current;
-                            if (bill_rendered == false) {
-                                update_bill_table();
-                                bill_rendered = true;
-                            }
-                        }
-                    }
-                };
                 xhttp.open("GET", "/update-state_fridge", true);
                 xhttp.send();
-                setTimeout(get_fridge_state, 200);
+                setTimeout(get_fridge_state, 1000);
             }
         </script>
     </head>
 
-    <body>
+    <body onload="get_fridge_state()">
         <header>
-            <div class="container">
+            <div class="head">
                 <img src="../static/Acc_Logo_All_Black_RGB.png" alt="Logo" class="logo">
                 <h1>Smart Fridge Interface</h1>
             </div>
-            <nav>
-                <ul>
+        </header>
+        <main>
+            <div class="actions link">
+                <ul class="flex bar">
                     <li><a href="/set_state0">Set State 0</a></li>
                     <li><a href="/set_state1">Set State 1</a></li>
                     <li><a href="/set_state2">Set State 2</a></li>
                     <li><a href="/set_state3">Set State 3</a></li>
                 </ul>
-            </nav>
-        </header>
-        <main id="fridge_state">
+            </div>
+            <div id="fridge_state" class="status">
+                <ul class="bar">
+                    <li>Fridge state: {{ session_state }}</li>
+                    <li>Magnet: {{ magnet_state }}</li>
+                    <li>Door: {{ door_state }}</li>
+                </ul>
 
-            {{ session_state }}<br>{{ magnet_state }}<br>{{ door_state }}
+            <div class="content">
+            {% block content %}
+            {% endblock %}
+            </div>
+
+            
         </main>
+        
         <footer>
             2021 Accenture Liquid Studios
         </footer>

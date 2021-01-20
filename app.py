@@ -104,7 +104,7 @@ def set_state2():
     session["status_magnet"] = "off"
     session["status_door"] = "open"
 
-    return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
+    return render_template('index.html', session_state=session["status_session"], magnet_state=session["status_magnet"], door_state=session["status_door"])
 
 
 # fridge was closed, bill shall be shown
@@ -118,7 +118,7 @@ def set_state3():
     # bill_show()
 
     #return render_template('index.html', magnet_state=session["status_magnet"], door_state="Ende Gelaende")
-    return render_template('index.html', magnet_state=session["status_magnet"], door_state=session["status_door"])
+    return render_template('bill.html', session_state=session["status_session"], magnet_state=session["status_magnet"], door_state=session["status_door"])
 
 # function will be called continuously
 # status will be updated according to measured state

@@ -1,9 +1,133 @@
-<html>
-    <head>
+{% extends "index.html" %}
 
-    </head>
-    <body>
-        This is the bill:
-        {{quantity}}
-    </body>
-</html>
+{% block import %}
+<style>
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700');
+        $base-spacing-unit: 24px;
+        $half-spacing-unit: $base-spacing-unit / 2;
+        $color-alpha: #1772FF;
+        $color-form-highlight: #EEEEEE;
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+        
+        body {
+            padding: $base-spacing-unit;
+            font-family: 'Source Sans Pro', sans-serif;
+            margin: 0;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin-right: auto;
+            margin-left: left;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+        }
+        
+        .table {
+            width: 80%;
+            border: 1px solid $color-form-highlight;
+        }
+        
+        .table-header {
+            display: flex;
+            width: 100%;
+            background: #000;
+            padding: ($half-spacing-unit * 1.5) 0;
+        }
+        
+        .table-row {
+            display: flex;
+            width: 100%;
+            padding: ($half-spacing-unit * 1.5) 0;
+            &:nth-of-type(odd) {
+                background: $color-form-highlight;
+            }
+        }
+        
+        .table-data,
+        .header__item {
+            flex: 1 1 20%;
+            text-align: center;
+        }
+        
+        .header__item {
+            text-transform: uppercase;
+        }
+        
+        .filter__link {
+            color: white;
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+            padding-left: $base-spacing-unit;
+            padding-right: $base-spacing-unit;
+            &::after {
+                content: '';
+                position: absolute;
+                right: -($half-spacing-unit * 1.5);
+                color: white;
+                font-size: $half-spacing-unit;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            &.desc::after {
+                content: '(desc)';
+            }
+            &.asc::after {
+                content: '(asc)';
+            }
+        }
+    </style>
+{% endblock import %}
+
+{% block content %}
+<h1 style="color:black;font-size:100px;">BILLED CIGARETTES</h1>
+<div class="container">
+
+    <div class="table">
+        <div class="table-header">
+            <div class="header__item"><a id="product" class="filter__link" href="#">Product</a></div>
+            <div class="header__item"><a id="price" class="filter__link filter__link--number" href="#">Price</a></div>
+            <div class="header__item"><a id="quantity" class="filter__link filter__link--number" href="#">Quantity</a></div>
+            <div class="header__item"><a id="total" class="filter__link filter__link--number" href="#">Total</a></div>
+        </div>
+        <div class="table-content">
+            <div class="table-row">
+                <div class="table-data">Winston_red</div>
+                <div class="table-data">6,60€</div>
+                <div class="table-data">1</div>
+                <div class="table-data">6,60€</div>
+            </div>
+            <div class="table-row">
+                <div class="table-data">Camel_yellow</div>
+                <div class="table-data">7,00€</div>
+                <div class="table-data">1</div>
+                <div class="table-data">7,00€</div>
+            </div>
+            <div class="table-row">
+                <div class="table-data">Total</div>
+                <div class="table-data">-</div>
+                <div class="table-data">-</div>
+                <div class="table-data">13,60€</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <img src="../static/image-2021-01-20-14-41-58-209.png" alt="payment">
+</div>
+{% endblock content%}
