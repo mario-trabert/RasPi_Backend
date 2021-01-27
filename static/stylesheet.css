@@ -19,6 +19,7 @@ header .head {
     align-items: baseline;
     flex-wrap: wrap;
     padding-bottom: 0.5em;
+    flex-shrink: 1;
     
 }
 
@@ -33,21 +34,30 @@ h1 {
     padding-left: 1em;
 }
 
+h2 {
+    font-size: 1.25em;
+    margin-top: 0;
+}
+
 .flex {
     display: flex;
 }
 
-.bar {
-    margin: 0;
-    padding: 0.5em 0;
+main {
+    min-height: 80vh;
+}
+
+.container {
+    padding: 1rem;
+    line-height: 1,5rem;
     border-bottom: 1px #bbbbbb solid;
 }
 
-.actions ul {
-    justify-content: flex-start;
-    padding-left: 2em;
-}
+ul {
+    margin: 0;
+    padding: 0;
 
+}
 li{
     list-style: none;
 }
@@ -64,18 +74,10 @@ li{
     color: black;
 }
 
-.status ul {
-    padding-left: 2em;
-    line-height: 1.5em;
-
-}
-
-
 main{
     border-left: 1px #bbbbbb solid;
     border-right: 1px #bbbbbb solid;
     margin: 0 50px;
-    height: 70vh;
     background-color: #f5f5f5;
     padding-bottom: 20px;
 }
@@ -86,5 +88,60 @@ footer {
     color: #aaaaaa;
     text-align: center;
     padding-top: 20px;
+}
+
+table {
+    width: 75%;
+    border-collapse: collapse;
+}
+
+
+th, td {
+    border: 1px #aaaaaa solid;
+    text-align: center;
+    padding: 0.25rem;
+    flex: 1 1 25%;
+}
+
+tr {
+    width: 100%;
+    display: flex;
+}
+
+tr:nth-of-type(odd){
+    background: #eeeeee;
+}
+
+th {
+    text-transform: uppercase;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.pay {
+    border: 5px solid #a9cdce;
+    border-radius: 1em;
+    background-color: #eeeeee;
+    width: 50%;
+    margin-bottom: 1em;
+    padding: 1em;
+}
+
+
+.paybuttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.paybuttons button {
+    font-weight: bold;
+    font-size: 1em;
+    align-items: center;
+    justify-content: center;
+    width: 7em;
+    height: 7em;
+    border: 1px solid #aaaaaa;
+    cursor: pointer;
 }
 

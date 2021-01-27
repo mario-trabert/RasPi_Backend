@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +30,7 @@
             </div>
         </header>
         <main>
-            <div class="actions link">
+            <div class="actions container">
                 <ul class="flex bar">
                     <li><a href="/set_state0">Set State 0</a></li>
                     <li><a href="/set_state1">Set State 1</a></li>
@@ -37,15 +38,16 @@
                     <li><a href="/set_state3">Set State 3</a></li>
                 </ul>
             </div>
-            <div id="fridge_state" class="status">
+            <div id="fridge_state" class="status container">
                 <ul class="bar">
                     <li>Fridge state: {{ session_state }}</li>
                     <li>Magnet: {{ magnet_state }}</li>
                     <li>Door: {{ door_state }}</li>
                 </ul>
+            </div>
 
             <div class="content">
-            {% block content %}
+            {% block table%}
             {% endblock %}
             </div>
 
