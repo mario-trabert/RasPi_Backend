@@ -1,92 +1,67 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>Fridge web Server</title>
-    <!-- <link rel="stylesheet" href="assets/stylesheet.css"> -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script>
-        var bill_rendered = false;
-        var DEBUG = false;
-
-        // function is being called regularly to call the backend
-        function get_fridge_state() {
-            // console.log("calling: get_fridge_state()");
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    //document.getElementById("fridge_state").innerHTML = this.response;
-                    var state_current = this.response;
-                    if (DEBUG) console.log("state_current = ".concat(state_current));
-                    if (state_current == "state1") {
-                        document.getElementById("fridge_state").innerHTML = "<div class='active'><h2 class='activeText center'>FRIDGE READY</h2></div>";
-                        if (DEBUG) console.log("has arrived in state1");
-                    }
-                    if (state_current == "state2") {
-                        document.getElementById("fridge_state").innerHTML = "<div id='state1_2'>FRIDGE OPEN</div>";
-                        if (DEBUG) console.log("has arrived in state2");
-                    }
-                    if (state_current == "state3") {
-                        document.getElementById("fridge_state").innerHTML = "<div id='state3'>Thanks, enjoy your medics</div";
-                        if (DEBUG) console.log("has arrived in state3");
-                        if (bill_rendered == false) {
-                            update_bill_table();
-                            bill_rendered = true;
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ session_state }}</title>
+        <link rel="stylesheet" type="text/css" href="../static/stylesheet.css">
+        <script>
+            var bill_rendered = false;
+            var DEBUG = false;
+    
+            // function is being called regularly to call the backend
+            function get_fridge_state() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function(){
+                    if (this.readyState == 4 && this.status == 200) {
+                        state_current = this.response;
+                        console.log(state_current);
+                        if (state_current == "state1") {  
+                            location.reload;    
                         }
-                    }
+                    } 
+                    
                 }
-            };
-            xhttp.open("GET", "/update-state_fridge", true);
-            xhttp.send();
-            setTimeout(get_fridge_state, 200);
-        }
+                               
+                xhttp.open("GET", "/update-state_fridge", true);
+                xhttp.send();
+                setTimeout(get_fridge_state, 1000);
+            }
+        </script>
 
-        // function to update the bill-table
-        function update_bill_table() {
-            var xhttp = new XMLHttpRequest();
-            var response_text = "";
-            xhttp.onreadystatechange = function () {
-                console.log("Hallo aus get_qrcode_html");
-                if (this.readyState == 4 && this.status == 200) {
-                    response_text = this.response;
-                    console.log(response_text);
+    </head>
 
-                    var json_obj = JSON.parse(response_text);
-                    var json_count = Object.keys(json_obj).length;
+    <body onload="get_fridge_state()">
+        <header>
+                <img src="../static/Acc_Logo_All_Black_RGB.png" alt="Logo" class="logo">
+                <h1>Smart Fridge Interface</h1>
+        </header>
+        <main>
+            <div class="actions container">
+                <ul class="flex bar">
+                    <li><a href="/set_state0">Set State 0</a></li>
+                    <li><a href="/set_state1">Set State 1</a></li>
+                    <li><a href="/set_state2">Set State 2</a></li>
+                    <li><a href="/set_state3">Set State 3</a></li>
+                </ul>
+            </div>
+            <div id="fridge_state" class="status container">
+                <ul class="bar">
+                    <li>Fridge state: {{ session_state }}</li>
+                    <li>Magnet: {{ magnet_state }}</li>
+                    <li>Door: {{ door_state }}</li>
+                </ul>
+            </div>
 
-                    var table_header = "<table id='bill_table'><tr><th>No.</th><th>Item Name</th></tr>";
-                    var table_content = "";
+            <div class="content">
+            {% block table%}
+            {% endblock %}
+            </div>
 
-                    var table_counter = 1;
-
-                    // loop through json_obj
-                    for (i = 0; i < json_count; i++) {
-                        table_content = table_content + "<tr><td>" + table_counter + "</td><td>" + json_obj[i] + "</td></tr>";
-                        table_counter++;
-                    }
-
-                    var table_footer = "</table>"
-                    document.getElementById("bill_table").innerHTML = table_header + table_content + table_footer;
-                }
-            };
-            xhttp.open("GET", "http://192.168.1.15:1337/get_qrcodes", true);
-            xhttp.send();
-
-        }
-    </script>
-</head>
-
-<body onload="get_fridge_state()">
-    <div id="fridge_state">
-
-    </div>
-    <main>
-        <table id="bill_table" class="product">
-
-        </table>
-    </main>
-</body>
-
+            
+        </main>
+        
+        <footer>
+            2021 Accenture Liquid Studios
+        </footer>
+    </body>
 </html>

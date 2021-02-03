@@ -1,9 +1,85 @@
-<html>
-    <head>
+{% extends "index.html" %}
 
-    </head>
-    <body>
-        This is the bill:
-        {{quantity}}
-    </body>
-</html>
+
+{% block table %}
+
+<script>
+    class Product {
+        constructor(name, price, quantity) {
+            this.name = name;
+            this.price = price;
+            this.quantity = quantity;
+        }
+    }
+    let shoppinglist = [new Product("Winston", 6.5, 1), new Product("Barclay", 5.85, 2), new Product("Winston", 6.5, 1), new Product("Marlboro", 7.20, 1)];
+    console.log(shoppinglist);
+    
+    let x;
+    for (x in shoppinglist){
+        let list = document.getElementById("list");
+        let newRow = document.createElement("tr");
+        list.append(newRow);
+        let name = document.createElement('td')
+        name.innerText = shoppinglist[x].name
+        let price = document.createElement('td')
+        price.innerText = shoppinglist[x].price;
+        let quantity= document.createElement('td')
+        quantity.innerText = shoppinglist[x].quantity;
+        let total = document.createElement('td')
+        total.innerText = price.innerText * quantity.innerText;
+        newRow.append(name, price, quantity, total)
+
+    }
+</script>
+
+
+<div class="container">
+    <h2>Bill</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="list">
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td>-</td>
+                <td>-</td>
+                <td>13,60</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="container">
+    <div class="pay">
+        <h2>Select Payment Method</h2>
+        <div class="paybuttons">
+            <button type="button" id="buttonDebit">
+                <img src="/static/icons/debit.jpg" alt="Debit">
+                <br>debit card
+            </button>
+            <button type="button" id="buttonCredit">
+                <img src="/static/icons/credit.jpg" alt="Credit">
+                <br>credit card
+            </button>
+            <button type="button" id="buttonPaypal">
+                <img src="/static/icons/paypal.jpg" alt="Paypal">
+                <br>PayPal
+            </button>
+            <button type="button" id="buttonRevolut">
+                <img src="/static/icons/revolut.jpg" alt="Revolut">
+                <br>Revolut
+            </button>
+        </div>
+        
+    </div>
+</div>
+
+
+{% endblock table%}
