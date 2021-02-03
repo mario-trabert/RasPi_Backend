@@ -10,7 +10,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-header .head {
+header{
     background-color: #f5f5f5;
     border-bottom: 1px #bbbbbb solid;
     width: 100vw;
@@ -19,19 +19,20 @@ header .head {
     align-items: baseline;
     flex-wrap: wrap;
     padding-bottom: 0.5em;
-    flex-shrink: 1;
+    flex-shrink: 2;
     
 }
 
 .logo {
+    display: inline-flex;
     height: 8vh;
     padding: 0.5em 0 0 0.5em
 }
 
 h1 {
-    margin: 0;
     font-size: 5vh;
     padding-left: 1em;
+    margin: 0;
 }
 
 h2 {

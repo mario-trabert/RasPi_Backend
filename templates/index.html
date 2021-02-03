@@ -3,10 +3,6 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ session_state }}</title>
-        
-
-        {% block import %}
-        {% endblock import %}
         <link rel="stylesheet" type="text/css" href="../static/stylesheet.css">
         <script>
             var bill_rendered = false;
@@ -15,19 +11,29 @@
             // function is being called regularly to call the backend
             function get_fridge_state() {
                 var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function(){
+                    if (this.readyState == 4 && this.status == 200) {
+                        state_current = this.response;
+                        console.log(state_current);
+                        if (state_current == "state1") {  
+                            location.reload;    
+                        }
+                    } 
+                    
+                }
+                               
                 xhttp.open("GET", "/update-state_fridge", true);
                 xhttp.send();
                 setTimeout(get_fridge_state, 1000);
             }
         </script>
+
     </head>
 
     <body onload="get_fridge_state()">
         <header>
-            <div class="head">
                 <img src="../static/Acc_Logo_All_Black_RGB.png" alt="Logo" class="logo">
                 <h1>Smart Fridge Interface</h1>
-            </div>
         </header>
         <main>
             <div class="actions container">

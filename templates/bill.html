@@ -1,6 +1,38 @@
 {% extends "index.html" %}
 
+
 {% block table %}
+
+<script>
+    class Product {
+        constructor(name, price, quantity) {
+            this.name = name;
+            this.price = price;
+            this.quantity = quantity;
+        }
+    }
+    let shoppinglist = [new Product("Winston", 6.5, 1), new Product("Barclay", 5.85, 2), new Product("Winston", 6.5, 1), new Product("Marlboro", 7.20, 1)];
+    console.log(shoppinglist);
+    
+    let x;
+    for (x in shoppinglist){
+        let list = document.getElementById("list");
+        let newRow = document.createElement("tr");
+        list.append(newRow);
+        let name = document.createElement('td')
+        name.innerText = shoppinglist[x].name
+        let price = document.createElement('td')
+        price.innerText = shoppinglist[x].price;
+        let quantity= document.createElement('td')
+        quantity.innerText = shoppinglist[x].quantity;
+        let total = document.createElement('td')
+        total.innerText = price.innerText * quantity.innerText;
+        newRow.append(name, price, quantity, total)
+
+    }
+</script>
+
+
 <div class="container">
     <h2>Bill</h2>
     <table>
@@ -12,26 +44,16 @@
                 <th>Total</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>Winston_red</td>
-                <td>6,60</td>
-                <td>1</td>
-                <td>6,60</td>
-            </tr>
-            <tr>
-                <td>Camel_yellow</td>
-                <td>7,00</td>
-                <td>1</td>
-                <td>6,60</td>
-            </tr>
+        <tbody id="list">
+        </tbody>
+        <tfoot>
             <tr>
                 <td>Total</td>
                 <td>-</td>
                 <td>-</td>
                 <td>13,60</td>
             </tr>
-        </tbody>
+        </tfoot>
     </table>
 </div>
 <div class="container">
@@ -55,8 +77,9 @@
                 <br>Revolut
             </button>
         </div>
-
+        
     </div>
 </div>
+
 
 {% endblock table%}
